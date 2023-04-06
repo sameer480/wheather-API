@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Weather App</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="api.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <h2><i class="fa fa-map-marker"></i><span id="location"></span></h2>
+                <h6 id="weather"></h6>
+                <h4><span id="temp"></span><sup>o</sup>C</h4>
+                <img src="" id="icon">
+                <button onclick="window.location.reload()" class="refresh"><i class="fa fa-refresh"></i></button>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            var link = "https://api.openweathermap.org/data/2.5/weather?q=Delhi&appid=fe86a68408e02cd3473d1d7d5ac80221";
+            var request = new XMLHttpRequest();
+            request.open('GET', link, true);
+            request.onload = function() {
+                var obj = JSON.parse(this.response);
+                console.log(obj);
+                document.getElementById('weather').innerHTML = obj.weather[0].description;
+                document.getElementById('location').innerHTML = obj.name;
+                document.getElementById('temp').innerHTML = Math.round(obj.main.temp - 273.15);
+                document.getElementById('icon').src = "https://openweathermap.org/img/w/" + obj.weather[0].icon + ".png";
+            }
+            request.onerror = function() {
+                console.log("Failed to load data");
+            }
+            request.send();
+        </script>
+    </body>
+</html>
